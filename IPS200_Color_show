@@ -1,0 +1,147 @@
+void ips200_show_string_color (uint16 x, uint16 y, const char dat[],const uint16 color)
+{
+    // 如果程序在输出了断言信息 并且提示出错位置在这里
+    // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
+    zf_assert(x < ips200_x_max);
+    zf_assert(y < ips200_y_max);
+
+    uint16 j = 0;
+    while(dat[j] != '\0')
+    {
+        switch(ips200_display_font)
+        {
+            case IPS200_6X8_FONT:
+                ips200_show_char_color(x + 6 * j, y, dat[j],color);
+                j ++;
+                break;
+            case IPS200_8X16_FONT:
+                ips200_show_char_color(x + 8 * j, y, dat[j],color);
+                j ++;
+                break;
+            case IPS200_16X16_FONT:
+                // 暂不支持
+                break;
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     IPS200 显示有颜色32位有符号 (去除整数部分无效的0)
+// 参数说明     x               坐标x方向的起点 参数范围 [0, ips200_x_max-1]
+// 参数说明     y               坐标y方向的起点 参数范围 [0, ips200_y_max-1]
+// 参数说明     dat             需要显示的变量 数据类型 int32
+// 参数说明     num             需要显示的位数 最高10位  不包含正负号
+// 参数说明     dat             需要显示的颜色
+// 返回参数     void
+// 使用示例     ips200_show_int(0, 0, x, 3);                    // x 可以为 int32 int16 int8 类型
+// 备注信息     负数会显示一个 ‘-’号   正数显示一个空格
+//-------------------------------------------------------------------------------------------------------------------
+void ips200_show_int_color(uint16 x, uint16 y, const int32 dat, uint8 num,const uint16 color)
+{
+    // 如果程序在输出了断言信息 并且提示出错位置在这里
+    // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
+    zf_assert(x < ips200_x_max);
+    zf_assert(y < ips200_y_max);
+    zf_assert(num > 0);
+    zf_assert(num <= 10);
+
+    int32 dat_temp = dat;
+    int32 offset = 1;
+    char data_buffer[12];
+
+    memset(data_buffer, 0, 12);
+    memset(data_buffer, ' ', num+1);
+
+    if(num < 10)
+    {
+        for(; num > 0; num --)
+        {
+            offset *= 10;
+        }
+        dat_temp %= offset;
+    }
+    func_int_to_str(data_buffer, dat_temp);
+    ips200_show_string_color(x, y, (const char *)&data_buffer,color);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     IPS200 显示有颜色32位无符号 (去除整数部分无效的0)
+// 参数说明     x               坐标x方向的起点 参数范围 [0, ips114_x_max-1]
+// 参数说明     y               坐标y方向的起点 参数范围 [0, ips114_y_max-1]
+// 参数说明     dat             需要显示的变量 数据类型 uint32
+// 参数说明     num             需要显示的位数 最高10位  不包含正负号
+// 参数说明     dat             需要显示的颜色
+// 返回参数     void
+// 使用示例     ips200_show_uint(0, 0, x, 3);                   // x 可以为 uint32 uint16 uint8 类型
+// 备注信息
+//-------------------------------------------------------------------------------------------------------------------
+void ips200_show_uint_color (uint16 x, uint16 y, const uint32 dat, uint8 num,const uint16 color)
+{
+    // 如果程序在输出了断言信息 并且提示出错位置在这里
+    // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
+    zf_assert(x < ips200_x_max);
+    zf_assert(y < ips200_y_max);
+    zf_assert(num > 0);
+    zf_assert(num <= 10);
+
+    uint32 dat_temp = dat;
+    int32 offset = 1;
+    char data_buffer[12];
+    memset(data_buffer, 0, 12);
+    memset(data_buffer, ' ', num);
+
+    if(num < 10)
+    {
+        for(; num > 0; num --)
+        {
+            offset *= 10;
+        }
+        dat_temp %= offset;
+    }
+    func_uint_to_str(data_buffer, dat_temp);
+    ips200_show_string_color(x, y, (const char *)&data_buffer,color);
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+// 函数简介     IPS200 显示有颜色浮点数(去除整数部分无效的0)
+// 参数说明     x               坐标x方向的起点 参数范围 [0, ips200_x_max-1]
+// 参数说明     y               坐标y方向的起点 参数范围 [0, ips200_y_max-1]
+// 参数说明     dat             需要显示的变量，数据类型float或double
+// 参数说明     num             整数位显示长度   最高8位
+// 参数说明     pointnum        小数位显示长度   最高6位
+// 参数说明     dat             需要显示的颜色
+// 返回参数     void
+// 使用示例     ips200_show_float(0, 0, x, 2, 3);               // 显示浮点数   整数显示2位   小数显示三位
+// 备注信息     特别注意当发现小数部分显示的值与你写入的值不一样的时候，
+//              可能是由于浮点数精度丢失问题导致的，这并不是显示函数的问题，
+//              有关问题的详情，请自行百度学习   浮点数精度丢失问题。
+//              负数会显示一个 ‘-’号   正数显示一个空格
+//-------------------------------------------------------------------------------------------------------------------
+void ips200_show_float_color (uint16 x, uint16 y, const float dat, uint8 num, uint8 pointnum,const uint16 color)
+{
+    // 如果程序在输出了断言信息 并且提示出错位置在这里
+    // 那么一般是屏幕显示的时候超过屏幕分辨率范围了
+    zf_assert(x < ips200_x_max);
+    zf_assert(y < ips200_y_max);
+    zf_assert(num > 0);
+    zf_assert(num <= 8);
+    zf_assert(pointnum > 0);
+    zf_assert(pointnum <= 6);
+
+    float dat_temp = dat;
+    float offset = 1.0;
+    char data_buffer[17];
+    memset(data_buffer, 0, 17);
+    memset(data_buffer, ' ', num+pointnum+2);
+
+    if(num < 10)
+    {
+        for(; num > 0; num --)
+        {
+            offset *= 10;
+        }
+        dat_temp = dat_temp - ((int)dat_temp / (int)offset) * offset;
+    }
+    func_float_to_str(data_buffer, dat_temp, pointnum);
+    ips200_show_string_color(x, y, data_buffer,color);
+}
