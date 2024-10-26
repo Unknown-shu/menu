@@ -145,3 +145,5 @@ void ips200_show_float_color (uint16 x, uint16 y, const float dat, uint8 num, ui
     func_float_to_str(data_buffer, dat_temp, pointnum);
     ips200_show_string_color(x, y, data_buffer,color);
 }
+void Test(void);
+
