@@ -8,7 +8,7 @@ void Menu_init(void){
 //    menu_para_init();
 }
 //----------------------------------------------------------------------------------------------------
-/*èœå•åˆå§‹åŒ–*/
+/*²Ëµ¥³õÊ¼»¯*/
 void menu_init(struct Menu *handle, uint8_t Page, int EVENT_CODE)
 {
     memset(handle, 0, sizeof(struct Menu));
@@ -16,30 +16,30 @@ void menu_init(struct Menu *handle, uint8_t Page, int EVENT_CODE)
     handle->KeyEvent = EVENT_CODE ;
 }
 
-/*èœå•è·³è½¬*/
+/*²Ëµ¥Ìø×ª*/
 void Set_Menu(struct Menu *handle, uint8_t Page)
 {
     handle->Current_Page= Page ;
 }
 
-/*è·å–å½“å‰èœå•*/
+/*»ñÈ¡µ±Ç°²Ëµ¥*/
 uint8_t Get_Menu(struct Menu *handle)
 {
     return handle->Current_Page ;
 }
 
-/*è®¾ç½®å½“å‰å‘ç”Ÿçš„äº‹ä»¶å€¼*/
+/*ÉèÖÃµ±Ç°·¢ÉúµÄÊÂ¼şÖµ*/
 void Set_Event_Code(struct Menu *handle, int Event_Code)
 {
     handle->KeyEvent = Event_Code ;
 }
 
-/*è·å–å½“å‰å‘ç”Ÿçš„äº‹ä»¶å€¼*/
+/*»ñÈ¡µ±Ç°·¢ÉúµÄÊÂ¼şÖµ*/
 int Get_Event_Code(struct Menu *handle)
 {
     return handle->KeyEvent ;
 }
-/*èœå•é€‰é¡¹é€‰ä¸­å¾ªç¯*/
+/*²Ëµ¥Ñ¡ÏîÑ¡ÖĞÑ­»·*/
 void pagelimit(int8 *page_num,uint8 page_num_max)
 {
     if(*page_num>page_num_max)*page_num=1;
@@ -54,108 +54,111 @@ int Judgepress(struct Menu *handle)
         return 0;
 }
 //----------------------------------------------------------------------------------------------------
-/*èœå•å¤„ç†*/
+/*²Ëµ¥´¦Àí*/
 void Menu_Handler(struct Menu *handle)
 {
-    /*å½“å‰æ˜¯èœå•çš„å“ªä¸ªé¡µé¢*/
+    /*µ±Ç°ÊÇ²Ëµ¥µÄÄÄ¸öÒ³Ãæ*/
 
     switch(handle->Current_Page)
     {
         case MAIN_PAGE :
-            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
             main_page_process(handle->KeyEvent);
             break ;
         case Start_PAGE :
-            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
             Start_page_process(handle->KeyEvent);
             break ;
 
         case NAVIGATION_PAGE :
-            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
             navigation_page_process(handle->KeyEvent);
             break ;
         case Camera_PAGE :
-            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
             Camera_page_process(handle->KeyEvent);
             break ;
+        case  Config_PAGE :
+            Config_page_process(handle->KeyEvent);
+            break ;
 //        case SERVO_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_TURN_P_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_turn_p_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_TURN_D_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_turn_d_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_DUTY_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_duty_page_process(handle->KeyEvent);
 //            break ;
 //        case START_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            start_page_process(handle->KeyEvent);
 //            break ;
 //        case GPS_MAP_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            gps_map_page_process(handle->KeyEvent);
 //            break ;
 //        case ELEMENT_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            element_page_process(handle->KeyEvent);
 //            break ;
 //        case SPEED_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            speed_page_process(handle->KeyEvent);
 //            break ;
 //        case START_ANGLE_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            start_angle_page_process(handle->KeyEvent);
 //            break ;
 //        case GPS_POINTS_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            points_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_TURN_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_turn_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_STRAIGHT_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_straight_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_STRAIGHT_P_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_straight_p_page_process(handle->KeyEvent);
 //            break ;
 //        case SERVO_STRAIGHT_D_PAGE :
-//            /*é’ˆå¯¹æ³¨å†Œçš„é”®å€¼åšç›¸åº”çš„å¤„ç†*/
+//            /*Õë¶Ô×¢²áµÄ¼üÖµ×öÏàÓ¦µÄ´¦Àí*/
 //            servo_straight_d_page_process(handle->KeyEvent);
 //            break ;
         default:
             break ;
     }
 
-    /*åŠæ—¶å°†äº‹ä»¶æ¸…é™¤ï¼Œé˜²æ­¢é‡å¤è§¦å‘*/
+    /*¼°Ê±½«ÊÂ¼şÇå³ı£¬·ÀÖ¹ÖØ¸´´¥·¢*/
 
 }
 
 /***********************************************
-* @brief : èœå•å‚æ•°é…ç½®å­é¡µé¢
-* @param : *CFG_val              éœ€è¦é…ç½®çš„å€¼çš„åœ°å€ï¼Œè®°å¾—&
-*           page_start_row       èµ·å§‹è¡Œ
-*           basic_val            åŸºå‡†å‚æ•°
+* @brief : ²Ëµ¥²ÎÊıÅäÖÃ×ÓÒ³Ãæ
+* @param : *CFG_val              ĞèÒªÅäÖÃµÄÖµµÄµØÖ·£¬¼ÇµÃ&
+*           page_start_row       ÆğÊ¼ĞĞ
+*           basic_val            »ù×¼²ÎÊı
 * @return: void
 * @date  : 2024.10.15
 * @author: SJX
 ************************************************/
 #define VAL_VFG_SHOW_NUM_BIT          6
 #define VAL_VFG_SHOW_POINT_BIT        6
-#define VAL_VFG_SHOW_TOTAL_LINE       5                     //æ€»è¡Œæ•°ï¼ŒåŒ…å«å˜é‡å›ºå®šè¡Œå’Œå‡ ä¸ªæ•°å­—è¡Œå’Œexitè¡Œ
-#define LINE_MAX                      4
-uint8 up_down_flag = 0;         //è°ƒå‚èœå•åœ¨ä¸Šé¢è¿˜æ˜¯åœ¨ä¸‹é¢ï¼Œé»˜è®¤ä¸º0åœ¨ä¸‹é¢ï¼Œä¸º1åœ¨ä¸Šé¢
+#define VAL_VFG_SHOW_TOTAL_LINE       6                     //×ÜĞĞÊı£¬°üº¬±äÁ¿¹Ì¶¨ĞĞºÍ¼¸¸öÊı×ÖĞĞºÍexitĞĞ
+#define LINE_MAX                      VAL_VFG_SHOW_TOTAL_LINE-1
+uint8 up_down_flag = 0;         //µ÷²Î²Ëµ¥ÔÚÉÏÃæ»¹ÊÇÔÚÏÂÃæ£¬Ä¬ÈÏÎª0ÔÚÏÂÃæ£¬Îª1ÔÚÉÏÃæ
 float basic_1, basic_10, basic_100 ;
 uint16_t menu_Val_CFG_line;
 void menu_Val_CFG(float *CFG_val, uint16 page_start_row, float basic_val )
@@ -163,7 +166,7 @@ void menu_Val_CFG(float *CFG_val, uint16 page_start_row, float basic_val )
     uint8 flush_flag;
     uint8 CFG_stop_flag = 0;
     menu_Val_CFG_line = 1;
-    bool based_flag = 0;                            //é€‰ä¸­æ ‡å¿—ä½ï¼Œé€‰ä¸­ä¸º1ï¼Œä¸é€‰ä¸­ä¸º0
+    bool based_flag = 0;                            //Ñ¡ÖĞ±êÖ¾Î»£¬Ñ¡ÖĞÎª1£¬²»Ñ¡ÖĞÎª0
     basic_1 = basic_val;
     basic_10 = basic_val / 10 ;
     basic_100 = basic_val / 100;
@@ -179,8 +182,9 @@ void menu_Val_CFG(float *CFG_val, uint16 page_start_row, float basic_val )
     menu_Val_CFG_Flush(CFG_val, page_start_row, based_flag);
     while(CFG_stop_flag == 0)
     {
+//        printf("%d ,%d ,%d ,%d, %d, %d\r\n ",target_left,target_right,Encoder_speed_l,Encoder_speed_r,pwm_left, pwm_right);
         flush_flag = Key_IfEnter();
-        if(flush_flag == 1)
+        if(flush_flag == 1 || switch_encoder_change_num != 0)
         {
             if(key_get_state(KEY_4) == KEY_SHORT_PRESS)
             {
@@ -199,6 +203,10 @@ void menu_Val_CFG(float *CFG_val, uint16 page_start_row, float basic_val )
                         break;
 
                     case 4:
+                        *CFG_val = 0;
+                        break;
+
+                    case 5:
                         CFG_stop_flag = 1;
                         break;
                 }
@@ -239,20 +247,43 @@ void menu_Val_CFG(float *CFG_val, uint16 page_start_row, float basic_val )
                     switch (menu_Val_CFG_line)
                     {
                         case 1:
-                            *CFG_val -= basic_1;
+                            *CFG_val += basic_1;
                             break;
                         case 2:
-                            *CFG_val -= basic_10;
+                            *CFG_val += basic_10;
                             break;
                         case 3:
-                            *CFG_val -= basic_100;
+                            *CFG_val += basic_100;
                             break;
                     }
                 }
 
+             }
+            if(If_Switch_Encoder_Change() == 1)
+            {
+                if(based_flag == 0)
+                {
+                    menu_Val_CFG_line += switch_encoder_change_num;
+                    menu_Val_CFG_Limit(&menu_Val_CFG_line, LINE_MAX);
+                }
+                else
+                {
+                    switch (menu_Val_CFG_line)
+                   {
+                       case 1:
+                           *CFG_val += (basic_1 * switch_encoder_change_num);
+                           break;
+                       case 2:
+                           *CFG_val += basic_10 * switch_encoder_change_num;
+                           break;
+                       case 3:
+                           *CFG_val += basic_100 * switch_encoder_change_num;
+                           break;
+                   }
+                }
             }
             menu_Val_CFG_Flush(CFG_val, page_start_row, based_flag);
-            Beep_ShortRing();
+//            Beep_ShortRing();
             Flash_WriteAllVal();
         }
     }
@@ -260,8 +291,8 @@ void menu_Val_CFG(float *CFG_val, uint16 page_start_row, float basic_val )
 
 }
 /***********************************************
-* @brief : èœå•å‚æ•°é…ç½®å­é¡µé¢æ¸…å±å‡½æ•°(ç½®é»‘)å¹¶ç¡®å®šèµ·å§‹è¡Œ
-* @param : page_start_row       èµ·å§‹è¡Œ
+* @brief : ²Ëµ¥²ÎÊıÅäÖÃ×ÓÒ³ÃæÇåÆÁº¯Êı(ÖÃºÚ)²¢È·¶¨ÆğÊ¼ĞĞ
+* @param : page_start_row       ÆğÊ¼ĞĞ
 * @return: void
 * @date  : 2024.10.18
 * @author: SJX
@@ -276,6 +307,7 @@ void menu_Val_CFG_clear(uint16 *page_start_row)
         {
             ips200_draw_line(0, i, 239, i, RGB565_BLACK);
         }
+//        IPS200_Full_Parts(0, 240, *page_start_row + 18, *page_start_row + 10+18 + VAL_VFG_SHOW_TOTAL_LINE * 18);
         *page_start_row = *page_start_row + 5 + 18 * 1;
 
     }
@@ -289,9 +321,9 @@ void menu_Val_CFG_clear(uint16 *page_start_row)
     }
 }
 /***********************************************
-* @brief : èœå•å‚æ•°é…ç½®å­é¡µé¢å˜é‡åˆ·æ–°å‡½æ•°
-* @param : *CFG_val              éœ€è¦é…ç½®çš„å€¼çš„åœ°å€ï¼Œè®°å¾—&
-*           page_start_row       èµ·å§‹è¡Œ
+* @brief : ²Ëµ¥²ÎÊıÅäÖÃ×ÓÒ³Ãæ±äÁ¿Ë¢ĞÂº¯Êı
+* @param : *CFG_val              ĞèÒªÅäÖÃµÄÖµµÄµØÖ·£¬¼ÇµÃ&
+*           page_start_row       ÆğÊ¼ĞĞ
 * @return: void
 * @
 * @date  : 2024.10.18
@@ -312,8 +344,11 @@ void menu_Val_CFG_Flush(float *CFG_val, uint16 page_start_row,  bool temp_based_
             if(menu_Val_CFG_line == 3)  ips200_show_float_color(18, page_start_row + 18 * menu_Val_CFG_line, basic_100, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT,RGB565_RED);
             else                ips200_show_float_color(18, page_start_row + 18 * 3, basic_100, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT,RGB565_WHITE);
 
-            if(menu_Val_CFG_line == 4)  ips200_show_string_color(18, page_start_row + 18 * menu_Val_CFG_line, "exit", RGB565_RED);
-            else                ips200_show_string_color(18, page_start_row + 18 * 4, "exit", RGB565_WHITE);
+            if(menu_Val_CFG_line == 4)  ips200_show_string_color(18, page_start_row + 18 * menu_Val_CFG_line, "empty", RGB565_RED);
+            else                ips200_show_string_color(18, page_start_row + 18 * 4, "empty", RGB565_WHITE);
+
+            if(menu_Val_CFG_line == 5)  ips200_show_string_color(18, page_start_row + 18 * menu_Val_CFG_line, "exit", RGB565_RED);
+            else                ips200_show_string_color(18, page_start_row + 18 * 5, "exit", RGB565_WHITE);
 
         }
         else
@@ -321,7 +356,8 @@ void menu_Val_CFG_Flush(float *CFG_val, uint16 page_start_row,  bool temp_based_
             ips200_show_float(18, page_start_row + 18*1, basic_1, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT);
             ips200_show_float(18, page_start_row + 18*2, basic_10, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT);
             ips200_show_float(18, page_start_row + 18*3, basic_100, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT);
-            ips200_show_string(18, page_start_row + 18*4, "exit");
+            ips200_show_string(18, page_start_row + 18*5, "exit");
+            ips200_show_string(18, page_start_row + 18*4, "empty");
         }
 
 //    uint8 i;
@@ -330,9 +366,9 @@ void menu_Val_CFG_Flush(float *CFG_val, uint16 page_start_row,  bool temp_based_
     key_clear_all_state();
 }
 /***********************************************
-* @brief : èœå•å‚æ•°é…ç½®å­é¡µé¢è¡Œæ•°é™å¹…å‡½æ•°
-* @param : *line              éœ€è¦é…ç½®çš„è¡Œçš„åœ°å€ï¼Œè®°å¾—&
-*           line_max          æœ€å¤§è¡Œ
+* @brief : ²Ëµ¥²ÎÊıÅäÖÃ×ÓÒ³ÃæĞĞÊıÏŞ·ùº¯Êı
+* @param : *line              ĞèÒªÅäÖÃµÄĞĞµÄµØÖ·£¬¼ÇµÃ&
+*           line_max          ×î´óĞĞ
 * @return: void
 * @
 * @date  : 2024.10.18
@@ -351,9 +387,9 @@ void menu_Val_CFG_Limit(uint16 *line, uint16 line_max)
 }
 
 /***********************************************
-* @brief : èœå•å‚æ•°é…ç½®å­é¡µé¢ç®­å¤´æ˜¾ç¤º
-* @param : *line              éœ€è¦é…ç½®çš„è¡Œçš„åœ°å€ï¼Œè®°å¾—&
-*           line_max          æœ€å¤§è¡Œ
+* @brief : ²Ëµ¥²ÎÊıÅäÖÃ×ÓÒ³Ãæ¼ıÍ·ÏÔÊ¾
+* @param : *line              ĞèÒªÅäÖÃµÄĞĞµÄµØÖ·£¬¼ÇµÃ&
+*           line_max          ×î´óĞĞ
 * @return: void
 * @
 * @date  : 2024.10.19
@@ -361,27 +397,26 @@ void menu_Val_CFG_Limit(uint16 *line, uint16 line_max)
 ************************************************/
 void menu_Val_CFG_Arrow_Show(uint16 page_start_row,uint16 line_num)
 {
-    for (uint16 i = 1; i <= 4; i++)
+    for (uint16 i = 1; i <= LINE_MAX; i++)
     {
         if (i == line_num)
         {
-            // å½“å‰è¡Œæ˜¾ç¤º "->"
+            // µ±Ç°ĞĞÏÔÊ¾ "->"
             ips200_show_string(0, page_start_row + i * 18, "->");
         }
         else
         {
-            // å…¶ä»–è¡Œæ˜¾ç¤ºç©ºæ ¼
+            // ÆäËûĞĞÏÔÊ¾¿Õ¸ñ
             ips200_show_string(0, page_start_row + i * 18, "  ");
         }
     }
 }
-
 /***********************************************
-* @brief : cfgèœå•open closeæ˜¾ç¤º
-* @param : page_start_row     èµ·å§‹è¡Œ
-*          value              å€¼ 1å¼€0å…³
+* @brief : cfg²Ëµ¥open closeÏÔÊ¾
+* @param : page_start_row     ÆğÊ¼ĞĞ
+*          value              Öµ 1¿ª0¹Ø
 * @return: void
-* @date  : 2024å¹´10æœˆ31æ—¥15:55:00
+* @date  : 2024Äê10ÔÂ31ÈÕ15:55:00
 * @author: SJX
 ************************************************/
 void menu_Set_CFG_OpenClose_Show(uint16 page_start_row, uint8 value)
@@ -400,10 +435,10 @@ void menu_Set_CFG_OpenClose_Show(uint16 page_start_row, uint8 value)
     }
 }
 /***********************************************
-* @brief : cfgèœå•open closeæ˜¾ç¤º
-* @param : value              éœ€è¦ç¿»è½¬çš„å€¼ ï¼Œä¼ é€’åœ°å€
+* @brief : cfg²Ëµ¥open closeÏÔÊ¾
+* @param : value              ĞèÒª·­×ªµÄÖµ £¬´«µİµØÖ·
 * @return: void
-* @date  : 2024å¹´10æœˆ31æ—¥15:55:00
+* @date  : 2024Äê10ÔÂ31ÈÕ15:55:00
 * @author: SJX
 ************************************************/
 void menu_Set_CFG_Value_Toggle(uint8 *value)
@@ -415,12 +450,12 @@ void menu_Set_CFG_Value_Toggle(uint8 *value)
 }
 
 /***********************************************
-* @brief : èœå•é€‰æ‹©è¡Œæ•°åˆ·æ–°
+* @brief : ²Ëµ¥Ñ¡ÔñĞĞÊıË¢ĞÂ
 * @param : void
-* @return: line_num è¡Œçš„åœ°å€ï¼Œå› ä½¿ç”¨äº†è®°å¿†è¡Œæ•°ï¼Œæ‰€ä»¥éœ€è¦åœ°å€ä¼ å…¥
-* @date  : 2024å¹´11æœˆ6æ—¥13:12:04
+* @return: line_num ĞĞµÄµØÖ·£¬ÒòÊ¹ÓÃÁË¼ÇÒäĞĞÊı£¬ËùÒÔĞèÒªµØÖ·´«Èë
+* @date  : 2024Äê11ÔÂ6ÈÕ13:12:04
 * @author: SJX
-* @exp   ï¼šLine_Num_Flush(&line_number);
+* @exp   £ºLine_Num_Flush(&line_number);
 ************************************************/
 void Line_Num_Flush(int8 *line_num)
 {
@@ -432,3 +467,17 @@ void Line_Num_Flush(int8 *line_num)
     }
     switch_encode_change_get_buff_flag = 0;
 }
+//void IPS200_Full_Parts(uint16 start_X, uint16 end_X, uint16 start_Y, uint16 end_Y)
+//{
+//    uint16 while_color_buffer[ips200_width_max], i, j;
+//    IPS200_CS(0);
+//    for(i = start_X; i < end_X; i ++)
+//    {
+//        while_color_buffer[i] = RGB565_WHITE;
+//    }
+//    for (j = start_Y; j < end_Y; j ++)
+//    {
+//        ips200_write_16bit_data_array(while_color_buffer, 240);
+//    }
+//    IPS200_CS(1);
+//}
