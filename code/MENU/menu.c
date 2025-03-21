@@ -15,6 +15,7 @@ MenuPage_Linked_List *menu_head_page_node = NULL; // 菜单链表头指针
 {"TEST", PAGE_JUMP_TYPE, .action.void_func=Test_Page_Init,.display_line_count = 0},
  */
 
+float Test = 100;
 /***********************************************
 * @brief : 主页面初始化
 * @param : void
@@ -31,6 +32,7 @@ void Main_Page_Init(void)
 ////            {"TEST", STATIC_FUNC_RUN_TYPE, .action.void_func=MENUTESTTTTTTTTTTTTTTTTTTTTT,.display_line_count = 0},
 //            {"EDIT", FLOAT_VALUE_EDIT_TYPE, .action.float_float_func = menu_Val_CFG,.line_extends.float_value_edit_line.edit_value = &Test,.line_extends.float_value_edit_line.basic_val = 10,.display_line_count = 0},
 //            {"TEST", PAGE_JUMP_TYPE, .action.void_func=Test_Page_Init,.display_line_count = 0},
+            MENU_ITEM_FLOAT_SHOW("aaa", &Test, 0),
             {".",  }
     };
     static MenuPage Main_Page = {"Main", .line = MENU_LineList, .open_status = 0} ;

@@ -18,6 +18,30 @@
 
 #define my_assert(x)        zf_assert(x)
 
+#define MENU_ITEM_FLOAT_SHOW(name, value_ptr, line_count) \
+    { name, FLOAT_VALUE_SHOW_TYPE, .line_extends.float_value_show_line.show_value = value_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_INT_SHOW(name, value_ptr, line_count) \
+    { name, INT_VALUE_SHOW_TYPE, .line_extends.int_value_show_line.show_value = value_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_ENTER_FUNC(name, func_ptr, line_count) \
+    { name, ENTER_FUNC_RUN_TYPE, .action.void_func = func_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_STATIC_FUNC(name, func_ptr, line_count) \
+    { name, STATIC_FUNC_RUN_TYPE, .action.void_func = func_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_FLOAT_EDIT(name, edit_ptr, base_val, line_count) \
+    { name, FLOAT_VALUE_EDIT_TYPE, .action.float_float_func = menu_Val_CFG, \
+      .line_extends.float_value_edit_line.edit_value = edit_ptr, \
+      .line_extends.float_value_edit_line.basic_val = base_val, .display_line_count = line_count }
+
+#define MENU_ITEM_CONFIG_SHOW(name, config_ptr, line_count) \
+    { name, CONFIG_VALUE_SHOW_TYPE, .line_extends.config_value_show_line.show_value = config_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_PAGE_JUMP(name, func_ptr, line_count) \
+    { name, PAGE_JUMP_TYPE, .action.void_func = func_ptr, .display_line_count = line_count }
+
+
 typedef enum
 {
     menu_release                    ,
