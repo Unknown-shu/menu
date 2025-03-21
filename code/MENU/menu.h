@@ -16,19 +16,22 @@
 #define SELECTED_BRUSH      RGB565_RED
 #define MENU_KEY            MY_KEY_1
 
+#define MY_X_MAX            240
+#define MY_Y_MAX            320
+
 #define my_assert(x)        zf_assert(x)
-
-#define MENU_ITEM_FLOAT_SHOW(name, value_ptr, line_count) \
-    { name, FLOAT_VALUE_SHOW_TYPE, .line_extends.float_value_show_line.show_value = value_ptr, .display_line_count = line_count }
-
-#define MENU_ITEM_INT_SHOW(name, value_ptr, line_count) \
-    { name, INT_VALUE_SHOW_TYPE, .line_extends.int_value_show_line.show_value = value_ptr, .display_line_count = line_count }
 
 #define MENU_ITEM_ENTER_FUNC(name, func_ptr, line_count) \
     { name, ENTER_FUNC_RUN_TYPE, .action.void_func = func_ptr, .display_line_count = line_count }
 
 #define MENU_ITEM_STATIC_FUNC(name, func_ptr, line_count) \
     { name, STATIC_FUNC_RUN_TYPE, .action.void_func = func_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_FLOAT_SHOW(name, value_ptr, line_count) \
+    { name, FLOAT_VALUE_SHOW_TYPE, .line_extends.float_value_show_line.show_value = value_ptr, .display_line_count = line_count }
+
+#define MENU_ITEM_INT_SHOW(name, value_ptr, line_count) \
+    { name, INT_VALUE_SHOW_TYPE, .line_extends.int_value_show_line.show_value = value_ptr, .display_line_count = line_count }
 
 #define MENU_ITEM_FLOAT_EDIT(name, edit_ptr, base_val, line_count) \
     { name, FLOAT_VALUE_EDIT_TYPE, .action.float_float_func = menu_Val_CFG, \

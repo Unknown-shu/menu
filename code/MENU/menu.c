@@ -3,6 +3,8 @@
 uint8 menu_key_event = menu_release;
 static uint8 menu_cfg_flag = 0;
 static uint8 menu_global_line = 0;
+static uint8 last_menu_global_line = 0;
+static uint8 menu_global_line_buff_flag = 0;
 MenuPage_Linked_List *menu_head_page_node = NULL; // 菜单链表头指针
 
 /*
@@ -15,7 +17,6 @@ MenuPage_Linked_List *menu_head_page_node = NULL; // 菜单链表头指针
 {"TEST", PAGE_JUMP_TYPE, .action.void_func=Test_Page_Init,.display_line_count = 0},
  */
 
-float Test = 100;
 /***********************************************
 * @brief : 主页面初始化
 * @param : void
@@ -25,19 +26,13 @@ float Test = 100;
 ************************************************/
 void Main_Page_Init(void)
 {
-    static MenuLine  MENU_LineList[] = {
-//            {"Test1", FLOAT_VALUE_SHOW_TYPE, .line_extends.float_value_show_line.show_value = &Test,.display_line_count = 0},
-//            {"Test2", INT_VALUE_SHOW_TYPE, .line_extends.int_value_show_line.show_value = &int_val,.display_line_count = 0},
-////            {"Beep", ENTER_FUNC_RUN_TYPE, .action.void_func=MENUTESTTTTTTTTTTTTTTTTTTTTT, .display_line_count = 0},
-////            {"TEST", STATIC_FUNC_RUN_TYPE, .action.void_func=MENUTESTTTTTTTTTTTTTTTTTTTTT,.display_line_count = 0},
-//            {"EDIT", FLOAT_VALUE_EDIT_TYPE, .action.float_float_func = menu_Val_CFG,.line_extends.float_value_edit_line.edit_value = &Test,.line_extends.float_value_edit_line.basic_val = 10,.display_line_count = 0},
-//            {"TEST", PAGE_JUMP_TYPE, .action.void_func=Test_Page_Init,.display_line_count = 0},
-            MENU_ITEM_FLOAT_SHOW("aaa", &Test, 0),
-            {".",  }
+    static MenuLine  LineList[] = {
+        
+                        {".",  }
     };
-    static MenuPage Main_Page = {"Main", .line = MENU_LineList, .open_status = 0} ;
+    static MenuPage Page = {"Main", .line = LineList, .open_status = 0} ;
 
-    Menu_Push_Node(&Main_Page);
+    Menu_Push_Node(&Page);
 }
 
 /***********************************************
@@ -52,7 +47,7 @@ void MENU_RUN(void)
     static uint8 i = 0;
 
     my_assert(menu_head_page_node != NULL);
-
+    Menu_Key_Process();
     if(menu_head_page_node->page->open_status != 1)
     {
         Menu_Get_Page_LineNumMAX(menu_head_page_node->page);
@@ -60,19 +55,70 @@ void MENU_RUN(void)
 //        menu_global_line = menu_head_page_node->page->line_num;
         My_Show_String_Centered(0, menu_head_page_node->page->page_name);
 //        Menu_Val_CFG_Limit(&menu_global_line, menu_head_page_node->page->line_num_max);
-        menu_head_page_node->page->open_status = 1;
     }
 
     static uint16 use_start_line = 0;
+    if(menu_global_line_buff_flag == 1 || menu_key_event != menu_release || menu_head_page_node->page->open_status == 0)
+    {
+        menu_key_event = menu_release;
+        menu_global_line_buff_flag = 0;
+        menu_head_page_node->page->open_status = 1;
+
+        for(i = 0; i < (menu_head_page_node->page->line_num_max); i++)
+        {
+            if(menu_head_page_node->page->line[i].display_line_count != 0)
+            {
+                use_start_line += menu_head_page_node->page->line[i].display_line_count;
+            }
+
+            if(menu_head_page_node->page->line[i].line_name != 0)
+                My_Show_String_Color(0, (use_start_line + (i+1)) * 18, menu_head_page_node->page->line[i].line_name,(i+1)==menu_global_line?SELECTED_BRUSH:DEFAULT_BRUSH);
+            switch(menu_head_page_node->page->line[i].line_type)
+            {
+//                case STATIC_FUNC_RUN_TYPE:
+//                {
+//                    if(menu_head_page_node->page->line[i].action.void_func)
+//                    {
+//                        menu_head_page_node->page->line[i].action.void_func();
+//                    }
+//                    else
+//                        my_assert(0);       //不传函数执行牛魔
+//                       break;
+//                }
+                case CONFIG_VALUE_SHOW_TYPE:
+                {
+                    if(menu_head_page_node->page->line[i].line_extends.config_value_show_line.show_value != NULL)
+                    {
+                        if(*(menu_head_page_node->page->line[i].line_extends.config_value_show_line.show_value) == 0)
+                            My_Show_String(180, (use_start_line + (i+1)) * 18, "Close");
+                        else if(*(menu_head_page_node->page->line[i].line_extends.config_value_show_line.show_value) == 1)
+                            My_Show_String(180, (use_start_line + (i+1)) * 18, "Open ");
+                        else
+                            my_assert(0);                   //配置变量传入open || close以外的值
+                    }
+                       break;
+                }
+                case FLOAT_VALUE_EDIT_TYPE:
+                {
+                        if(menu_head_page_node->page->line[i].line_extends.float_value_edit_line.edit_value != NULL)
+                        {
+                            My_Show_Float_Color(120, (use_start_line + (i+1)) * 18, (*(menu_head_page_node->page->line[i].line_extends.float_value_edit_line.edit_value))+0.00001, 8, 5, DEFAULT_BRUSH);
+                        }
+                        else
+                            My_Show_Float_Color(120, (use_start_line + (i+1)) * 18, +0.00001, 8, 5, DEFAULT_BRUSH);
+                    break;
+                }
+                default:break;
+            }
+        }
+    }
+    use_start_line = 0;
     for(i = 0; i < (menu_head_page_node->page->line_num_max); i++)
     {
         if(menu_head_page_node->page->line[i].display_line_count != 0)
         {
             use_start_line += menu_head_page_node->page->line[i].display_line_count;
         }
-
-        if(menu_head_page_node->page->line[i].line_name != 0)
-            My_Show_String_Color(0, (use_start_line + (i+1)) * 18, menu_head_page_node->page->line[i].line_name,(i+1)==menu_global_line?SELECTED_BRUSH:DEFAULT_BRUSH);
         switch(menu_head_page_node->page->line[i].line_type)
         {
             case FLOAT_VALUE_SHOW_TYPE:
@@ -101,38 +147,15 @@ void MENU_RUN(void)
                     my_assert(0);       //不传函数执行牛魔
                    break;
             }
-            case CONFIG_VALUE_SHOW_TYPE:
-            {
-                if(menu_head_page_node->page->line[i].line_extends.config_value_show_line.show_value != NULL)
-                {
-                    if(*(menu_head_page_node->page->line[i].line_extends.config_value_show_line.show_value) == 0)
-                        My_Show_String(120, (use_start_line + (i+1)) * 18, "Close");
-                    else if(*(menu_head_page_node->page->line[i].line_extends.config_value_show_line.show_value) == 1)
-                        My_Show_String(120, (use_start_line + (i+1)) * 18, "Open ");
-                    else
-                        my_assert(0);                   //配置变量传入open || close以外的值
-                }
-                   break;
-            }
-            case FLOAT_VALUE_EDIT_TYPE:
-            {
-                if(menu_head_page_node->page->line[i].line_extends.float_value_edit_line.edit_value != NULL)
-                {
-                    My_Show_Float_Color(120, (use_start_line + (i+1)) * 18, (*(menu_head_page_node->page->line[i].line_extends.float_value_edit_line.edit_value))+0.00001, 8, 5, DEFAULT_BRUSH);
-                }
-                else
-                    My_Show_Float_Color(120, (use_start_line + (i+1)) * 18, +0.00001, 8, 5, DEFAULT_BRUSH);
-                   break;
-            }
             default:break;
-
         }
     }
-    Menu_Key_Process();
+
 
     use_start_line = 0;
 
-    printf("%d,%d\r\n", menu_global_line, i);
+
+//    printf("%d,%d\r\n", menu_global_line, i);
 }
 
 
@@ -165,6 +188,10 @@ void Menu_Event_Flush(void)
         {
             menu_global_line += switch_encoder_change_num;
             Menu_Val_CFG_Limit(&menu_global_line, menu_head_page_node->page->line_num_max);
+            if(menu_global_line != last_menu_global_line)
+                menu_global_line_buff_flag = 1;
+            else;
+//                menu_global_line_buff_flag = 0;
         }
     }
 }
@@ -244,7 +271,7 @@ void Menu_Key_Process(void)
 
         }
     }
-    menu_key_event = menu_release;
+//    menu_key_event = menu_release;
 
 }
 
@@ -545,7 +572,7 @@ void menu_Val_CFG_Flush(float *CFG_val, uint16 page_start_row,  bool temp_based_
             else                ips200_show_string_color(18, page_start_row + 18 * 4, "empty", RGB565_WHITE);
 
             if(menu_Val_CFG_line == 5)  ips200_show_string_color(18, page_start_row + 18 * menu_Val_CFG_line, "exit", RGB565_RED);
-            else                ips200_show_string_color(18, page_start_row + 18 * 5, "exit", RGB565_WHITE);
+            else                ips200_show_string_color(18, page_start_row + 18 * 5, "  ", RGB565_WHITE);
 
         }
         else
@@ -553,7 +580,7 @@ void menu_Val_CFG_Flush(float *CFG_val, uint16 page_start_row,  bool temp_based_
             ips200_show_float(18, page_start_row + 18*1, basic_1   + 0.0000001 , VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT);
             ips200_show_float(18, page_start_row + 18*2, basic_10  + 0.0000001, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT);
             ips200_show_float(18, page_start_row + 18*3, basic_100 + 0.0000001, VAL_VFG_SHOW_NUM_BIT, VAL_VFG_SHOW_POINT_BIT);
-            ips200_show_string(18, page_start_row + 18*5, "exit");
+            ips200_show_string(18, page_start_row + 18*5, "  ");
             ips200_show_string(18, page_start_row + 18*4, "empty");
         }
 
